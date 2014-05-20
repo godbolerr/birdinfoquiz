@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<birds>
+
+	<bird>
+		<id>1</id>
+		<name>Black Headed Ibis</name>
+		<alternatives>Black Headed Ibis,Black Headed Ibis 1 ,Black Headed Ibis
+			2
+		</alternatives>
+		<picUrl>http://birdinfoquiz.appspot.com/images/black_headed_ibis.jpg</picUrl>
+	</bird>
+
+	<bird>
+		<id>2</id>
+		<name>Black Winged Kite</name>
+		<alternatives>Black Winged Kite,Black Winged Kite 1 ,Black Winged Kite
+			2
+		</alternatives>
+		<picUrl>http://birdinfoquiz.appspot.com/images/black_winged_kite.jpg</picUrl>
+	</bird>
+
+	<bird>
+		<id>3</id>
+		<name>Bramhminy Kite</name>
+		<alternatives>Bramhminy Kite,Bramhminy Kite 1 ,Bramhminy Kite 2
+		</alternatives>
+		<picUrl>http://birdinfoquiz.appspot.com/images/brahminy_kite.jpg</picUrl>
+	</bird>
+
+	<bird>
+		<id>4</id>
+		<name>Common Hoppee</name>
+		<alternatives>Common Hoppee,Common Hoppee 2,Common Hoppee 3
+		</alternatives>
+		<picUrl>http://birdinfoquiz.appspot.com/images/common_hoppee.jpg</picUrl>
+	</bird>
+
+	<bird>
+		<id>5</id>
+		<name>Common Kingfisher</name>
+		<alternatives>Common Kingfisher,Common Kingfisher 1 ,Common Kingfisher
+			1</alternatives>
+		<picUrl>http://birdinfoquiz.appspot.com/images/common_kingfisher.jpg</picUrl>
+	</bird>
+
+	<bird>
+		<id>6</id>
+		<name>Indian Roller</name>
+		<alternatives>Indian Roller,Indian Roller 1,Indian Roller 2
+		</alternatives>
+		<picUrl>http://birdinfoquiz.appspot.com/images/indian_roller.jpg</picUrl>
+	</bird>
+
+	<bird>
+		<id>7</id>
+		<name>Oriental Darter</name>
+		<alternatives>Oriental Darter,Oriental Darter 1 ,Oriental Darter 2
+		</alternatives>
+		<picUrl>http://birdinfoquiz.appspot.com/images/oriental_darter.jpg</picUrl>
+	</bird>
+
+	<bird>
+		<id>8</id>
+		<name>Oriental White Eye</name>
+		<alternatives>Oriental White Eye 1 ,Oriental White Eye,Oriental White	Eye 2</alternatives>
+		<picUrl>http://birdinfoquiz.appspot.com/images/oriental_whiteeye.jpg</picUrl>
+	</bird>
+
+	<bird>
+		<id>9</id>
+		<name>Shikra</name>
+		<alternatives>Shikra,Shikra 1,Shikra 2</alternatives>
+		<picUrl>http://birdinfoquiz.appspot.com/images/shikra.jpg</picUrl>	</bird>
+
+</birds>
