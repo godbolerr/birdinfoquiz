@@ -73,8 +73,8 @@ h1,h2,h3,h4 {
 
 				<div id="logo-wrap">
 					<div id="site-logo">
-						<a href="http://bidcinsights.appspot.com/"><img
-							src="images/mybank.jpg"></a>
+						<img
+							src="images/bird.png"></a>
 					</div>
 
 				</div>
@@ -136,35 +136,50 @@ h1,h2,h3,h4 {
 							<p></p>
 
 							<div class="alert alert-info">
-								<strong>Step 2&nbsp;:&nbsp;</strong>Please update any missing/incorrrect information.
-							</div>
+								<strong>Add new bird information..</strong>	</div>
 							<div align="center">
 
 								<form action='<c:url value="/addBirds.do"/>'
 									method="post">
 									<table border="1">
+									
+									
 										<tr>
-											<td>Name</td>
-											<td><input type="text" size="25" name="name" id="name"
-												value='<c:out value="${profile.fullName}"/>' /></td>
+											<td>English Name</td>
+											<td><input type="text" size="25" name="englishName" id="englishName"
+												 /></td>
 										</tr>
+										
+										
+							
+										<tr>
+											<td>Marathi Name</td>
+											<td><input type="text" size="25" name="marathiName" id="marathiName"
+										 /></td>
+										</tr>
+										
+										
 										<tr>
 											<td>Picture</td>
 											<td><input type="text" size="25" name="picUrl" id="picUrl"
 												value="" /></td>
 										</tr>
 										<tr>
-											<td>Alternative Names</td>
-											<td><input type="text" size="25" name="alternatives"
-												id="alternatives" value='<c:out value="${profile.country}"/>' /></td>
+											<td>Options [English]</td>
+											<td><input type="text" size="25" name="enOptions"
+												id="enOptions"/> </td>
 										</tr>
+										
+										<tr>
+											<td>Options [Marathi]</td>
+											<td><input type="text" size="25" name="mrOptions"
+												id="mrOptions"/> </td>
+										</tr>										
 										
 										<tr>
 											<td colspan="2" align="center"><input type="hidden"
 												name="uniqueId" id="uniqueId"
 												value='<c:out value="${profile.validatedId}"/>' /> <input
-												type="hidden" name="profileImageURL" id="profileImageURL"
-												value='<c:out value="${profile.profileImageURL}"/>' /> <input
 												type="submit" value="Submit" /></td>
 										</tr>
 									</table>
@@ -181,9 +196,12 @@ h1,h2,h3,h4 {
 										<tr>
 											<th>#</th>
 											<th>Id</th>
-											<th>Name</th>
+											<th>English Name</th>
+											
+											<th>Lang Options</th>
+											<th>Lang Names</th>	
 											<th>URL</th>
-											<th>Alternatives</th>
+									
 										</tr>
 
 										<c:forEach items="${birds}" var="bird">
@@ -192,8 +210,10 @@ h1,h2,h3,h4 {
 												<td><c:out value="${count}" /></td>
 												<td><c:out value="${bird.id}" /></td>
 												<td><c:out value="${bird.name}" /></td>
+												<td><c:out value="${bird.langOptions}" /></td>
+												<td><c:out value="${bird.langNames}" /></td>
 												<td><c:out value="${bird.picUrl}" /></td>
-												<td><c:out value="${bird.englishNames}" /></td>
+												
 											</tr>
 										</c:forEach>
 									</table>

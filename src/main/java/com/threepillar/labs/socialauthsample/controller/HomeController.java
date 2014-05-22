@@ -1,9 +1,7 @@
 package com.threepillar.labs.socialauthsample.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,18 +17,11 @@ import org.brickred.socialauth.util.MethodType;
 import org.brickred.socialauth.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bidc.data.BIDCAccount;
-import com.bidc.data.BIDCCustomer;
-import com.bidc.data.BIDCTransaction;
-import com.bidc.service.BIDCService;
-import com.bidc.service.impl.BIDCServiceImpl;
-import com.threepillar.labs.socialauthsample.bean.User;
 import com.threepillar.labs.socialauthsample.util.Constants;
 
 @Controller
@@ -46,7 +37,6 @@ public class HomeController {
 	
     @RequestMapping(value="/", method = RequestMethod.GET)
     public String showHomePage() {
-    	logger.info("Rendering homepage.");
         return VIEW_NAME_HOMEPAGE;
     }
     
@@ -77,28 +67,7 @@ public class HomeController {
 		session.setAttribute("CLIENT_IP", request.getRemoteAddr());
 		session.setAttribute("GUEST", guest);
 		
-		String geoUrl = "http://freegeoip.net/json/" + request.getRemoteAddr() ;
-		// Get the geolocation details from the request ip.
-		
-		try {
-			Response response = HttpUtil.doHttpRequest(geoUrl,
-					MethodType.GET.toString(), null, null);
-
-				String result = response.getResponseBodyAsString(org.brickred.socialauth.util.Constants.ENCODING);
-				
-				if ( result != null ) {
-					session.setAttribute("GEODETAILS",result);
-				}
-		
-		} catch (SocialAuthException e) {
-			logger.severe(e.getMessage());
-			e.printStackTrace();
-		} catch (Exception e) {
-			logger.severe(e.getMessage());
-			e.printStackTrace();
-		}
-		
-		
+	
 		
 		
 		ModelAndView modelAndView = new ModelAndView("registration");
@@ -132,26 +101,7 @@ public class HomeController {
 		session.setAttribute("CLIENT_IP", request.getRemoteAddr());
 		session.setAttribute("GUEST", guest);
 		
-		String geoUrl = "http://freegeoip.net/json/" + request.getRemoteAddr() ;
-		// Get the geolocation details from the request ip.
 		
-		try {
-			Response response = HttpUtil.doHttpRequest(geoUrl,
-					MethodType.GET.toString(), null, null);
-
-				String result = response.getResponseBodyAsString(org.brickred.socialauth.util.Constants.ENCODING);
-				
-				if ( result != null ) {
-					session.setAttribute("GEODETAILS",result);
-				}
-		
-		} catch (SocialAuthException e) {
-			logger.severe(e.getMessage());
-			e.printStackTrace();
-		} catch (Exception e) {
-			logger.severe(e.getMessage());
-			e.printStackTrace();
-		}
 		
 		
 		ModelAndView modelAndView = new ModelAndView("registration");
@@ -160,15 +110,6 @@ public class HomeController {
 	}
 	
 
-
-		
-	
-	@RequestMapping(value = "/qrform")
-	public ModelAndView generateQrForm(final HttpServletRequest request) {
-		logger.info("QR Code generation...");
-		ModelAndView modelAndView = new ModelAndView("qrform");
-		return modelAndView;
-	}	
 
 	@RequestMapping(value = "/importContacts")
 	public ModelAndView importContacts(final HttpServletRequest request) {

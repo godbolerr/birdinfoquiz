@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class BIDCCustomer extends AppEntity {
+public class Customer extends AppEntity {
 
 	@Id
 	String id;
@@ -28,7 +28,7 @@ public class BIDCCustomer extends AppEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public BIDCCustomer() {
+	public Customer() {
 		id = "C" + System.currentTimeMillis();
 		setCreatedBy("System");
 		setCreatedOn(new Date());

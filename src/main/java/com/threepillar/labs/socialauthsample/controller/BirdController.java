@@ -1,23 +1,15 @@
 package com.threepillar.labs.socialauthsample.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.brickred.socialauth.AuthProvider;
-import org.brickred.socialauth.SocialAuthManager;
-import org.brickred.socialauth.exception.SocialAuthException;
 import org.brickred.socialauth.spring.bean.SocialAuthTemplate;
-import org.brickred.socialauth.util.HttpUtil;
-import org.brickred.socialauth.util.MethodType;
-import org.brickred.socialauth.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,18 +20,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bidc.data.BIDCAccount;
-import com.bidc.data.BIDCProduct;
 import com.bidc.data.BirdInfo;
 import com.bidc.service.AppService;
-import com.bidc.service.BIDCException;
-import com.bidc.service.BIDCService;
 import com.bidc.service.impl.AppServiceImpl;
-import com.bidc.service.impl.BIDCServiceImpl;
 import com.threepillar.labs.socialauthsample.util.Constants;
 
 @Controller
@@ -92,10 +78,10 @@ public class BirdController {
 
 	}
 	
-	@RequestMapping(value = "/xml/getbirds", method = {
+	@RequestMapping(value = "/xml/{langCode}/getbirds", method = {
 			RequestMethod.GET })
 	public @ResponseBody
-	ResponseEntity<String> getBirds() {
+	ResponseEntity<String> getBirds(@PathVariable String langCode) {
 
 		
 		// Initiate payment transfer.
@@ -123,13 +109,17 @@ public class BirdController {
 			
 
 			sb.append("<name>");
-			sb.append(birdInfo.getName());
+			sb.append(birdInfo.getNameForLang(langCode));
 			sb.append("</name>");
+			
+			sb.append("<englishName>");
+			sb.append(birdInfo.getName());
+			sb.append("</englishName>");
 			
 				
 			
 			sb.append("<alternatives>");
-			sb.append(birdInfo.getNames().get("en"));
+			sb.append(birdInfo.getOptionsForLang(langCode));
 			sb.append("</alternatives>");
 			
 			sb.append("<picUrl>");
@@ -155,19 +145,24 @@ public class BirdController {
 		
 		String guest = "Guest" ; 
 		
-		String name = request.getParameter("name");
+		String englishName = request.getParameter("englishName");
+		String marathiName = request.getParameter("marathiName");
 		String picUrl = request.getParameter("picUrl");
-		String alternatives = request.getParameter("alternatives");
+		String enOptions = request.getParameter("enOptions");
+		String mrOptions = request.getParameter("mrOptions");
 		
 		AppService service = new AppServiceImpl();
 		
-		Map<String,String> namesMap = new HashMap<String,String>();
-		namesMap.put("en", alternatives);
+
 		BirdInfo bInfo = new BirdInfo();
 		
-		bInfo.setNames(namesMap);
-		bInfo.setName(name);
+		bInfo.setName(englishName);
+		
 		bInfo.setPicUrl(picUrl);
+		bInfo.addLangName("mr", marathiName);
+		bInfo.addLangOptions("en", enOptions);
+		bInfo.addLangOptions("mr", mrOptions);
+		
 		
 		service.addBird(bInfo);
 		

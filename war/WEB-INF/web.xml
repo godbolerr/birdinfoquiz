@@ -24,22 +24,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>qrcodeservlet</servlet-name>
-		<servlet-class>com.bidc.servlet.QRCodeServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/socialauthdemo-servlet.xml</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>qrcodeservlet</servlet-name>
-		<url-pattern>/qrcode</url-pattern>
-	</servlet-mapping>
-
-
-
+	
 
 
 

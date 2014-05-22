@@ -8,7 +8,7 @@ public interface AppDao {
 	
 	public <T> T get(Class<T> theClass,String id);
 	
-	public <T> boolean delete(Class<T> theClass,String id);
+	public <T> boolean delete(Object instance);
 	
 	public <T> void reset(Class<T> theClass);
 	
@@ -16,8 +16,6 @@ public interface AppDao {
 	
 	public <T> boolean update(Class<T> theClass,Object o);
 	
-	public List<BIDCTransaction> getTransactionsForAccount(String accountId);
-	
-	public BIDCAccount getAccountDetails(String customerId);
+
 
 }

@@ -29,7 +29,7 @@
 
 	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>BIDC BANK</title>
+<title>Bird App</title>
 
 <meta name="viewport" content="width=device-width">
 <link rel="stylesheet" href="css/style.css" type="text/css"
@@ -73,8 +73,8 @@ h1,h2,h3,h4 {
 
 				<div id="logo-wrap">
 					<div id="site-logo">
-						<a href="http://bidcinsights.appspot.com/"><img
-							src="images/mybank.jpg"></a>
+						<img
+							src="images/bird.png"></a>
 					</div>
 
 				</div>
@@ -105,7 +105,7 @@ h1,h2,h3,h4 {
 					test="${fn:indexOf(fn:toLowerCase(pageURL),'registration') > 0 || profile != null}">
 					<c:set var="registration" value="current_page_item" />
 					<c:set var="pageHeading"
-						value="Get on board with the leader ..." />
+						value="Login with Facebook .." />
 				</c:if>
 				<c:if
 					test="${fn:indexOf(pageURL,'Contact') > 0 || contacts != null}">
@@ -151,8 +151,7 @@ h1,h2,h3,h4 {
 
 							<div id="main">
 								<div class="alert alert-info">
-									<strong>Step 1&nbsp;:&nbsp;</strong>Lets begin with your
-									favorite social hub..
+									<strong>Step 1&nbsp;:&nbsp;</strong>Please login with your social id...
 								</div>
 								<div>
 									<table cellpadding="10" cellspacing="10" align="center">
@@ -225,16 +224,8 @@ h1,h2,h3,h4 {
 
 
 									</table>
-									<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-									<br />
-									<p class="additional">
-										IP Address :
-										<c:out value="${sessionScope.CLIENT_IP}" />
-									<p>
-										Your location details :
-										<c:out value="${sessionScope.GEODETAILS}" />
-									</p>
-									</p>
+									
+								
 
 								</div>
 							</div>
@@ -271,8 +262,7 @@ h1,h2,h3,h4 {
 
 			<div id="site-info">
 				<p class="copyright">
-					&copy; 2014 <a href="http://bidcinsights.appspot.com/"
-						title="MY Bank" rel="home">Bank on Us !</a>
+					&copy; 2014 
 				</p>
 			</div>
 		</footer>

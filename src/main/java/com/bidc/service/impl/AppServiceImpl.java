@@ -3,15 +3,34 @@
  */
 package com.bidc.service.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Logger;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
 import com.bidc.data.AppDao;
 import com.bidc.data.BirdInfo;
+import com.bidc.data.Customer;
 import com.bidc.data.EmfDao;
 import com.bidc.service.AppService;
+import com.bidc.service.BIDCException;
 
 /**
  * @author Ravi
@@ -94,7 +113,99 @@ public class AppServiceImpl implements AppService {
 	 */
 	@Override
 	public void deleteBird(BirdInfo info) {
-		dao.delete(BirdInfo.class, info.getId());
+		dao.delete(info);
 	}
+	
+	@Override
+	public boolean isUserRegistered(String providerId, String userId)
+			throws BIDCException {
+
+		boolean result = false;
+
+		List<Customer> cust = dao.getAll(Customer.class);
+
+		for (Iterator iterator = cust.iterator(); iterator.hasNext();) {
+			Customer bidcCustomer = (Customer) iterator.next();
+
+			if (bidcCustomer.getProviderId().equalsIgnoreCase(providerId)
+					&& bidcCustomer.getSocialId().equalsIgnoreCase(userId)) {
+				return true;
+			}
+
+		}
+
+		return result;
+	}
+
+	@Override
+	public Customer registerUser(Customer customer,
+			Map<String, String> context) throws BIDCException {
+
+		dao.add(Customer.class, customer);
+		
+
+		return customer;
+	}
+
+	@Override
+	public Customer getCustomer(String providerId, String socialId)
+			throws BIDCException {
+
+		List<Customer> cust = dao.getAll(Customer.class);
+
+		for (Iterator iterator = cust.iterator(); iterator.hasNext();) {
+			Customer bidcCustomer = (Customer) iterator.next();
+
+			if (bidcCustomer.getProviderId().equalsIgnoreCase(providerId)
+					&& bidcCustomer.getSocialId().equalsIgnoreCase(socialId)) {
+				return bidcCustomer;
+			}
+
+		}
+
+		return null;
+	}
+
+
+	public void sendEmail(String emailId, String subject, String message,
+			String userName, byte[] bytes) {
+
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+
+		try {
+			Message msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("dbidc.bank@gmail.com",
+					"DBIDC Bank Admin"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					"ravindra.godbole@cognizant.com", userName));
+			msg.setSubject(subject);
+			msg.setText(message);
+
+			// // Add the jpg file
+			//
+			if (bytes != null) {
+				 Multipart mp = new MimeMultipart();
+
+				MimeBodyPart attachment = new MimeBodyPart();
+				attachment.setFileName("promo.png");
+			//	attachment.setContent(bytes, "");
+			    DataSource src = new ByteArrayDataSource(bytes, "image/png");
+			    attachment.setDataHandler(new DataHandler(src));
+				mp.addBodyPart(attachment);
+				msg.setContent(mp);
+
+			}
+			Transport.send(msg);
+			logger.severe("Mail sent with message " + msg);
+		} catch (AddressException e) {
+			logger.severe("Email error" + e.getMessage());
+		} catch (MessagingException e) {
+			logger.severe("Email error" + e.getMessage());
+		} catch (UnsupportedEncodingException e) {
+			logger.severe("Email error" + e.getMessage());
+		} 
+	}
+
 
 }

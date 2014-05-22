@@ -41,7 +41,7 @@
 <link rel="stylesheet" id="Droid+Sans:400,700-css" href="css/css.css"
 	type="text/css" media="all">
 <link rel="shortcut icon"
-	href="http://bidcinsights.appspot.com/images/bankicon.jpg">
+	href="bird.png">
 <style type="text/css" id="custom-background-css">
 body.custom-background {
 	background-color: #ffffff;
@@ -75,8 +75,8 @@ h1,h2,h3,h4 {
 
 				<div id="logo-wrap">
 					<div id="site-logo">
-						<a href="http://bidcinsights.appspot.com/"><img
-							src="images/mybank.jpg"></a>
+						<img
+							src="images/bird.png"></a>
 					</div>
 
 				</div>
@@ -109,11 +109,9 @@ h1,h2,h3,h4 {
 
 						<ul>
 							<li class="<c:out value="${contact}"/>"><a
-								href="<c:url value="/importContacts.do"/>">Import Contacts</a></li>
-							<li class="<c:out value="${share}"/>"><a
-								href="<c:url value="/shareForm.do"/>">Share with friends</a></li>
-
-						</ul>
+								href="<c:url value="/birds.do"/>">Manage Bird Data</a></li>
+								
+														</ul>
 
 
 					</div>
@@ -135,7 +133,6 @@ h1,h2,h3,h4 {
 					<div class="post-content" align="right">
 						<form action="/sendoffer.do">
 						
-						 <form:select path="merchant" items="${merchants}" />
 						
 						
 							<input type="Submit" value="Send Offer">
@@ -144,89 +141,8 @@ h1,h2,h3,h4 {
 
 						<p></p>
 
-						<c:if test="${!empty sessionScope.OFFER}">
-							Offer Id : <c:out value="${sessionScope.OFFER}" />
-						</c:if>
-
 
 					</div>
-
-					<div id="post-187"
-						class="post-187 portfolio type-portfolio status-publish hentry post singular-page">
-
-						
-						<div class="post-content" style="padding-left: 0px;">
-
-							<p></p>
-							<p></p>
-
-							<!--  MAIN CONTENT STARTS HERE  -->
-							<p></p>
-
-							<div class="alert alert-info">
-								Account # : <strong><c:out value="${account.id}" /></strong>
-								&nbsp;&nbsp;&nbsp;&nbsp; Balance : $ <strong><c:out
-										value="${account.balance}" /></strong>
-							</div>
-
-						<div class="post-content" align="left">
-							<form action="/authSuccess.do">
-								<input type="Submit" value="Refresh">
-							</form>
-
-						</div>
-							<div align="center">
-
-								<c:set var="count" value="0" scope="page" />
-								<c:if test="${!empty transactions}">
-									<h4>Transaction Details</h4>
-									<table border="1">
-										<tr>
-											<th>#</th>
-											<th>Date</th>
-											<th>Id</th>
-											<th>Type</th>
-											<th>Amount</th>
-											<th>Note</th>
-
-										</tr>
-
-										<c:forEach items="${transactions}" var="transaction">
-											<c:set var="count" value="${count + 1}" scope="page" />
-											<tr>
-												<td><c:out value="${count}" /></td>
-
-												<td><c:out value="${transaction.createdOn}" /></td>
-												<td><c:out value="${transaction.id}" /></td>
-												<td><c:out value="${transaction.type}" /></td>
-
-												<td><c:out value="${transaction.amount}" /></td>
-												<td><c:out value="${transaction.note}" /></td>
-											</tr>
-										</c:forEach>
-									</table>
-								</c:if>
-
-
-
-
-
-
-
-								<p>.</p>
-								<p>.</p>
-								<p>.</p>
-								<p>.</p>
-								<p>.</p>
-								<p>.</p>
-								<p>.</p>
-								<p></p>
-								<p></p>
-								<p></p>
-								<p></p>
-								<p></p>
-								<p></p>
-								<p></p>
 
 
 

@@ -47,14 +47,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bidc.data.AppDao;
-import com.bidc.data.BIDCAccount;
-import com.bidc.data.BIDCCustomer;
-import com.bidc.data.BIDCMerchant;
-import com.bidc.data.BIDCTransaction;
+import com.bidc.data.Customer;
 import com.bidc.data.EmfDao;
+import com.bidc.service.AppService;
 import com.bidc.service.BIDCException;
-import com.bidc.service.BIDCService;
-import com.bidc.service.impl.BIDCServiceImpl;
+import com.bidc.service.impl.AppServiceImpl;
 import com.threepillar.labs.socialauthsample.bean.User;
 import com.threepillar.labs.socialauthsample.util.Constants;
 
@@ -67,21 +64,6 @@ public class SuccessController {
 
 	@Autowired
 	private SocialAuthTemplate socialAuthTemplate;
-
-	@RequestMapping(value = "/sendoffer")
-	public ModelAndView sendoffer(final HttpServletRequest request)
-			throws Exception {
-		SocialAuthManager manager = socialAuthTemplate.getSocialAuthManager();
-		AuthProvider provider = manager.getCurrentAuthProvider();
-		
-		HttpSession session = request.getSession();
-		
-
-		//new BIDCServiceImpl().sendEmail(provider.getUserProfile().getEmail(), "Offer Details", "Please find the QR code attached.", "Mr Customer",buffer.toByteArray());
-
-	
-		return registration(provider);
-	}
 
 	@RequestMapping(value = "/authSuccess")
 	public ModelAndView getRedirectURL(final HttpServletRequest request)
@@ -124,11 +106,11 @@ public class SuccessController {
 
 		// Create user and populate it with data.
 
-		BIDCService service = new BIDCServiceImpl();
+		AppService service = new AppServiceImpl();
 
 		if (service.isUserRegistered(providerId, socialId) == false) {
 
-			BIDCCustomer customer = new BIDCCustomer();
+			Customer customer = new Customer();
 			customer.setProviderId(provider.getProviderId());
 			customer.setSocialId(profile.getValidatedId());
 			customer.setEmail(profile.getEmail());
@@ -166,7 +148,7 @@ public class SuccessController {
 
 			User user = new User();
 
-			BIDCCustomer cust = service.getCustomer(providerId, socialId);
+			Customer cust = service.getCustomer(providerId, socialId);
 
 			if (cust != null) {
 				user.setEmail(cust.getEmail());
@@ -174,24 +156,9 @@ public class SuccessController {
 
 			Map<String, Object> model = new HashMap<String, Object>();
 
-			// Get his account information and transactions as well.
-			
-			List<BIDCMerchant> merchants = dao.getAll(BIDCMerchant.class);
-			
-			if ( merchants == null ) {
-				merchants = new ArrayList<BIDCMerchant>();
-			}
-
-			BIDCAccount account = service.getAccountDetails(cust);
-
-			List<BIDCTransaction> transactions = service
-					.getTransactions(account);
-
+		
 			model.put("user", user);
-			model.put("account", account);
-			model.put("transactions", transactions);
-			model.put("merchants", merchants);
-			model.put("merchant", new BIDCMerchant());	
+	
 
 			view = new ModelAndView("registrationSuccess", model);
 		}
@@ -224,7 +191,7 @@ public class SuccessController {
 		SocialAuthManager manager = socialAuthTemplate.getSocialAuthManager();
 		AuthProvider provider = manager.getCurrentAuthProvider();
 		session.setAttribute("OFFERID", "O" + System.currentTimeMillis());
-		BIDCService service = new BIDCServiceImpl();
+		AppService service = new AppServiceImpl();
 		Map<String, Object> model = new HashMap<String, Object>();
 		
 		User thisUser = new User();
@@ -235,32 +202,26 @@ public class SuccessController {
 		try {
 			profile = provider.getUserProfile();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
 		String socialId = profile.getValidatedId();
 		
-		BIDCCustomer cust = null;
+		Customer cust = null;
 		try {
 			
 			cust = service.getCustomer(providerId, socialId);
-			
-			BIDCAccount account = service.getAccountDetails(cust);
+		
 			
 			if (cust != null) {
 				thisUser.setEmail(cust.getEmail());
 			}
 
 
-			List<BIDCTransaction> transactions = service
-					.getTransactions(account);
 			model.put("user", thisUser);
-			model.put("account", account);
-			model.put("transactions", transactions);
 			
 		} catch (BIDCException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -16,14 +16,14 @@ public class BirdInfo extends AppEntity {
 	String name;
 
 	String picUrl;
-	
-	Map<String,String> names;
 
-	Map<String,String> alternativeNames;
+	// Options in other languages
+	Map<String, String> langOptions;
+	
+	// Names in other languages
+	
+	Map<String, String> langNames;
 
-	String englishNames;
-	
-	
 	String createdBy;
 
 	Date createdOn;
@@ -34,12 +34,13 @@ public class BirdInfo extends AppEntity {
 	private static final long serialVersionUID = 1L;
 
 	public BirdInfo() {
-		id = "C" + System.currentTimeMillis();
+		id = "B" + System.currentTimeMillis();
 		setCreatedBy("System");
 		setCreatedOn(new Date());
-		alternativeNames = new HashMap<String,String>();
-		names = new HashMap<String,String>();
-
+		langOptions = new HashMap<String, String>();
+		langNames = new HashMap<String,String>();
+		langOptions = new HashMap<String,String>();
+		
 	}
 
 	@Override
@@ -63,7 +64,8 @@ public class BirdInfo extends AppEntity {
 	}
 
 	/**
-	 * @param createdBy the createdBy to set
+	 * @param createdBy
+	 *            the createdBy to set
 	 */
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
@@ -77,35 +79,16 @@ public class BirdInfo extends AppEntity {
 	}
 
 	/**
-	 * @param createdOn the createdOn to set
+	 * @param createdOn
+	 *            the createdOn to set
 	 */
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
 
-	public Map<String, String> getAlternativeNames() {
-		return alternativeNames;
-	}
 
-	public void setAlternativeNames(Map<String, String> alternativeNames) {
-		this.alternativeNames = alternativeNames;
-	}
-
-	public Map<String, String> getNames() {
-		return names;
-	}
-
-	public void setNames(Map<String, String> names) {
-		this.names = names;
-	}
-	
-	
-	public void addAlternativeName(String key,String value){
-		alternativeNames.put(key, value);
-	}
-	
-	public void addName(String key,String value){
-		names.put(key, value);
+	public void addAlternativeName(String key, String value) {
+		langOptions.put(key, value);
 	}
 
 	public String getName() {
@@ -123,15 +106,40 @@ public class BirdInfo extends AppEntity {
 	public void setPicUrl(String picUrl) {
 		this.picUrl = picUrl;
 	}
-	
-	public String getEnglishNames(){
-		
-		if ( names != null ){
-			return names.get("en");
-		} else {
-			return "NA";
-		}
-		
+
+	public Map<String, String> getLangOptions() {
+		return langOptions;
 	}
 
+	public void setLangOptions(Map<String, String> langOptions) {
+		this.langOptions = langOptions;
+	}
+
+	public Map<String, String> getLangNames() {
+		return langNames;
+	}
+
+	public void setLangNames(Map<String, String> langNames) {
+		this.langNames = langNames;
+	}
+	
+	public String getNameForLang(String code){
+		String langName = "NA";
+		langName = langNames.get(code);
+		return langName;
+	}
+	
+	public String getOptionsForLang(String code){
+		String options = "NA";
+		options = langOptions.get(code);
+		return options;
+	}
+		
+	public void addLangName(String key,String value){
+		langNames.put(key, value);
+	}
+	
+	public void addLangOptions(String key,String value){
+		langOptions.put(key, value);
+	}
 }

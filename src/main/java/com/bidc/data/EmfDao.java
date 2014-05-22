@@ -3,14 +3,13 @@
  */
 package com.bidc.data;
 
-import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 /**
- * @author 115750
+ * @author Ravi
  *
  */
 public enum EmfDao implements AppDao {
@@ -27,14 +26,6 @@ public enum EmfDao implements AppDao {
 		 return results;
 	}
 	
-	@Override
-	public List<BIDCTransaction> getTransactionsForAccount(String accountId) {
-		EntityManager em = EmfService.get().createEntityManager();
-		String queryString = "SELECT t FROM " + BIDCTransaction.class.getCanonicalName() + " t  where accountId = '" + accountId + "'" ;
-		Query q = em.createQuery(queryString);			
-		List<BIDCTransaction> results = q.getResultList();
-		 return results;
-	}	
 
 	@Override
 	public <T> T get(Class<T> theClass, String id) {
@@ -46,10 +37,9 @@ public enum EmfDao implements AppDao {
 	}
 
 	@Override
-	public <T> boolean delete(Class<T> theClass, String id) {
+	public <T> boolean delete(Object intance) {
 		EntityManager em = EmfService.get().createEntityManager();
-		QRecord t = em.find(QRecord.class, id);
-		em.remove(t);
+		em.remove(intance);
 		em.close();
 		return true;
 	}
@@ -90,17 +80,5 @@ public enum EmfDao implements AppDao {
 		return true;
 	}
 	
-	
-
-	@Override
-	public BIDCAccount getAccountDetails(String customerId) {
-		EntityManager em = EmfService.get().createEntityManager();
-		String queryString = "select t from BIDCAccount t  where t.customerId = '" + customerId + "'";
-		Query q = em.createQuery(queryString);			
-		List<BIDCAccount> results = q.getResultList();
-		
-		return (BIDCAccount) results.get(0);
-
-	}
 
 }
