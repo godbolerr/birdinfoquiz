@@ -104,7 +104,7 @@ public class AppServiceImpl implements AppService {
 	 */
 	@Override
 	public void updateBirdInfo(BirdInfo info) {
-		// TODO Auto-generated method stub
+		dao.update(BirdInfo.class, info);
 
 	}
 
@@ -113,6 +113,7 @@ public class AppServiceImpl implements AppService {
 	 */
 	@Override
 	public void deleteBird(BirdInfo info) {
+		//dao.get(BirdInfo.class, info.getId());
 		dao.delete(info);
 	}
 	

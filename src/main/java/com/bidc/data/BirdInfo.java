@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 
 @Entity
@@ -18,10 +20,12 @@ public class BirdInfo extends AppEntity {
 	String picUrl;
 
 	// Options in other languages
+	@Basic(fetch = FetchType.EAGER) 
 	Map<String, String> langOptions;
 	
 	// Names in other languages
 	
+	@Basic(fetch = FetchType.EAGER) 
 	Map<String, String> langNames;
 
 	String createdBy;

@@ -39,7 +39,7 @@ public enum EmfDao implements AppDao {
 	@Override
 	public <T> boolean delete(Object intance) {
 		EntityManager em = EmfService.get().createEntityManager();
-		em.remove(intance);
+		em.remove(em.merge(intance));
 		em.close();
 		return true;
 	}

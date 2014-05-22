@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page isELIgnored="false"%>
 <style type="text/css">
@@ -129,55 +130,52 @@ h1,h2,h3,h4 {
 						class="post-187 portfolio type-portfolio status-publish hentry post singular-page">
 
 						<div class="post-content" style="padding-left: 0px;">
-							<h3>
-								<c:out value="${pageHeading }" />
-							</h3>
-							<p></p>
-							<p></p>
-
-							<div class="alert alert-info">
-								<strong>Add new bird information..</strong>	</div>
-							<div align="center">
+					
+					
 
 								<form action='<c:url value="/addBirds.do"/>'
 									method="post">
 									<table border="1">
 									
-									
 										<tr>
-											<td>English Name</td>
-											<td><input type="text" size="25" name="englishName" id="englishName"
+											<td>ID</td>
+											<td><input type="text" size="70" name="id" id="id" value="<c:out value="${bird.id}"/>" readOnly="true"
+												 /></td>
+												 
+												 	<td>English Name</td>
+											<td><input type="text" size="70" name="englishName" id="englishName" value="<c:out value="${bird.name}"/>"
 												 /></td>
 										</tr>
-										
+									
+									
+									
 										
 							
 										<tr>
+										 <td>Picture</td>
+											<td><input type="text" size="70" name="picUrl" id="picUrl"
+												value="<c:out value="${bird.picUrl}"/>" /></td>
 											<td>Marathi Name</td>
-											<td><input type="text" size="25" name="marathiName" id="marathiName"
+											<td><input type="text" size="70" name="marathiName" id="marathiName" value="<c:out value="${marathiName}"/>"
 										 /></td>
+										
 										</tr>
 										
-										
-										<tr>
-											<td>Picture</td>
-											<td><input type="text" size="25" name="picUrl" id="picUrl"
-												value="" /></td>
-										</tr>
+									
 										<tr>
 											<td>Options [English]</td>
-											<td><input type="text" size="25" name="enOptions"
+											<td><input type="text" size="70" name="enOptions" value="<c:out value="${enOptions}"/>"
 												id="enOptions"/> </td>
+												
+												<td>Options [Marathi]</td>
+											<td><input type="text" size="70" name="mrOptions" value="<c:out value="${mrOptions}"/>"
+												id="mrOptions"/> </td>
 										</tr>
 										
-										<tr>
-											<td>Options [Marathi]</td>
-											<td><input type="text" size="25" name="mrOptions"
-												id="mrOptions"/> </td>
-										</tr>										
+																		
 										
 										<tr>
-											<td colspan="2" align="center"><input type="hidden"
+											<td colspan="4" align="center"><input type="hidden"
 												name="uniqueId" id="uniqueId"
 												value='<c:out value="${profile.validatedId}"/>' /> <input
 												type="submit" value="Submit" /></td>
@@ -190,17 +188,20 @@ h1,h2,h3,h4 {
 						<div align="center">
 
 								<c:set var="count" value="0" scope="page" />
+								
+								
 								<c:if test="${!empty birds}">
 									<h4>Birds</h4>
 									<table border="1">
 										<tr>
 											<th>#</th>
+											<th>delete</th>
 											<th>Id</th>
-											<th>English Name</th>
-											
+											<th>English Name</th>											
 											<th>Lang Options</th>
 											<th>Lang Names</th>	
 											<th>URL</th>
+											
 									
 										</tr>
 
@@ -208,11 +209,13 @@ h1,h2,h3,h4 {
 											<c:set var="count" value="${count + 1}" scope="page" />
 											<tr>
 												<td><c:out value="${count}" /></td>
-												<td><c:out value="${bird.id}" /></td>
+												<td><a href="/xml/deleteBird/<c:out value="${bird.id}"/>">Delete</a></td>
+												<td><a href="/viewUpdate.do?bid=<c:out value="${bird.id}" />"><c:out value="${bird.id}" /></a></td>
 												<td><c:out value="${bird.name}" /></td>
 												<td><c:out value="${bird.langOptions}" /></td>
 												<td><c:out value="${bird.langNames}" /></td>
 												<td><c:out value="${bird.picUrl}" /></td>
+												
 												
 											</tr>
 										</c:forEach>
@@ -238,12 +241,7 @@ h1,h2,h3,h4 {
 
 		<footer>
 
-			<div id="site-info">
-				<p class="copyright">
-					&copy; 2014 <a href="http://bidcinsights.appspot.com/"
-						title="MY Bank" rel="home">Bank on Us !</a>
-				</p>
-			</div>
+		
 		</footer>
 	</div>
 	<!-- #body-container -->

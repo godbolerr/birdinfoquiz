@@ -1,12 +1,11 @@
 package com.threepillar.labs.socialauthsample.controller;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.brickred.socialauth.spring.bean.SocialAuthTemplate;
@@ -31,155 +30,229 @@ import com.threepillar.labs.socialauthsample.util.Constants;
 @Controller
 public class BirdController {
 
-	private final Logger logger = Logger.getLogger(BirdController.class.getName());
-	
-	 protected static final String VIEW_NAME_HOMEPAGE = "index";
-	 
+	private final Logger logger = Logger.getLogger(BirdController.class
+			.getName());
+
+	protected static final String VIEW_NAME_HOMEPAGE = "index";
 
 	@Autowired
 	private SocialAuthTemplate socialAuthTemplate;
-	
-      
 
 	@RequestMapping(value = "/birds")
-	public ModelAndView showBirds(final HttpServletRequest request,ModelMap model) {
+	public ModelAndView showBirds(final HttpServletRequest request,
+			ModelMap model) {
 		HttpSession session = request.getSession();
-		
+
 		String who = request.getParameter("W");
-		
-		String guest = "Guest" ; 
-		
-		if ( who != null && "ABCCBA".equals(who)){
-			guest  = "Nagaraj" ;
-					
-			
+
+		String guest = "Guest";
+
+		if (who != null && "ABCCBA".equals(who)) {
+			guest = "Nagaraj";
+
 		}
-		
-		if ( who != null && "XYZZYX".equals(who)){
-			guest  = "Sanjoy" ;
-					
-			
+
+		if (who != null && "XYZZYX".equals(who)) {
+			guest = "Sanjoy";
+
 		}
-		
-		
+
 		session.setAttribute(Constants.REQUEST_TYPE, Constants.REGISTRATION);
 		session.setAttribute("CLIENT_IP", request.getRemoteAddr());
 		session.setAttribute("GUEST", guest);
-		
+
 		AppService service = new AppServiceImpl();
 		List<BirdInfo> birds = service.getAllBirds();
-		
+
 		model.addAttribute("birds", birds);
-		
-		ModelAndView modelAndView = new ModelAndView("birds",model);
-		
-		
+
+		ModelAndView modelAndView = new ModelAndView("birds", model);
+
 		return modelAndView;
 
 	}
-	
-	@RequestMapping(value = "/xml/{langCode}/getbirds", method = {
-			RequestMethod.GET })
-	public @ResponseBody
-	ResponseEntity<String> getBirds(@PathVariable String langCode) {
 
-		
+	@RequestMapping(value = "/xml/{langCode}/getbirds", method = { RequestMethod.GET }, produces = "text/xml; charset=utf-8")
+	public @ResponseBody
+	String getBirds(@PathVariable String langCode , final HttpServletResponse resp) {
+
 		// Initiate payment transfer.
-		
+
 		// As of now source and target accounts are hardcoded.
 		
+		resp.setCharacterEncoding("UTF-8");
 		
+
 		AppService svc = new AppServiceImpl();
-		
+
 		List<BirdInfo> birds = svc.getAllBirds();
-		
+
 		StringBuilder sb = new StringBuilder();
 		
+		sb.append("<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>");
+
 		sb.append("<birds>");
-		
+
 		for (Iterator iterator = birds.iterator(); iterator.hasNext();) {
 			BirdInfo birdInfo = (BirdInfo) iterator.next();
-			
+
 			sb.append("<bird>");
-			
-			
+
 			sb.append("<id>");
 			sb.append(birdInfo.getId());
 			sb.append("</id>");
-			
+
+			String thisName = birdInfo.getNameForLang(langCode);
+
+			if (thisName == null) {
+				thisName = birdInfo.getName();
+			}
 
 			sb.append("<name>");
-			sb.append(birdInfo.getNameForLang(langCode));
+			sb.append(thisName);
 			sb.append("</name>");
-			
+
 			sb.append("<englishName>");
 			sb.append(birdInfo.getName());
 			sb.append("</englishName>");
-			
-				
-			
+
+			String options = birdInfo.getOptionsForLang(langCode);
+
+			if (options == null) {
+				options = "NA1,NA2";
+			}
+
 			sb.append("<alternatives>");
-			sb.append(birdInfo.getOptionsForLang(langCode));
+			sb.append(options);
 			sb.append("</alternatives>");
-			
+
 			sb.append("<picUrl>");
 			sb.append(birdInfo.getPicUrl());
 			sb.append("</picUrl>");
-			
+
 			sb.append("</bird>");
 		}
-		
+
 		sb.append("</birds>");
 		HttpHeaders responseHeaders = new HttpHeaders();
+		
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		
 		responseHeaders.setContentType(MediaType.TEXT_XML);
-		return new ResponseEntity<String>(sb.toString(), responseHeaders,
-				HttpStatus.CREATED);
+		
+		
+		
+		return sb.toString();
 
 	}
-	
-	@RequestMapping(value = "/addBirds")
-	public ModelAndView addBirds(final HttpServletRequest request,ModelMap model) {
+
+	@RequestMapping(value = "/xml/deleteBird/{bid}")
+	public ModelAndView deleteBird(final HttpServletRequest request,final HttpServletResponse resp,
+			ModelMap model, @PathVariable String bid) {
+		
+		resp.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html");
+
+		AppService service = new AppServiceImpl();
+
+		BirdInfo binfo = service.getBirdInfo(bid);
+
+		service.deleteBird(binfo);
+
+		List<BirdInfo> birds = service.getAllBirds();
+
+		model.addAttribute("birds", birds);
+
+		ModelAndView modelAndView = new ModelAndView("birds", model);
+
+		return modelAndView;
+
+	}
+
+	@RequestMapping(value = "/viewUpdate")
+	public ModelAndView viewUpdate(final HttpServletRequest request,final HttpServletResponse resp,
+			ModelMap model) {
 
 		HttpSession session = request.getSession();
 		
-		
-		String guest = "Guest" ; 
-		
+		resp.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html");
+
+		String guest = "Guest";
+
+		String bid = request.getParameter("bid");
+
+		AppService service = new AppServiceImpl();
+
+		BirdInfo bInfo = service.getBirdInfo(bid);
+
+		session.setAttribute(Constants.REQUEST_TYPE, Constants.REGISTRATION);
+		session.setAttribute("CLIENT_IP", request.getRemoteAddr());
+		session.setAttribute("GUEST", guest);
+
+		String eOpt = new String(bInfo.getLangOptions().get("en"));
+		String mrOpt = new String(bInfo.getLangOptions().get("mr"));
+		String mrLang = new String(bInfo.getLangNames().get("mr"));
+
+		List<BirdInfo> birds = service.getAllBirds();
+
+		model.addAttribute("bird", bInfo);
+		model.addAttribute("birds", birds);
+		model.addAttribute("enOptions", eOpt);
+		model.addAttribute("mrOptions", mrOpt);
+		model.addAttribute("marathiName", mrLang);
+
+		ModelAndView modelAndView = new ModelAndView("birds", model);
+
+		return modelAndView;
+
+	}
+
+	@RequestMapping(value = "/addBirds")
+	public ModelAndView addBirds(final HttpServletRequest request,
+			ModelMap model) {
+
+		HttpSession session = request.getSession();
+
+		String guest = "Guest";
+
 		String englishName = request.getParameter("englishName");
 		String marathiName = request.getParameter("marathiName");
 		String picUrl = request.getParameter("picUrl");
 		String enOptions = request.getParameter("enOptions");
 		String mrOptions = request.getParameter("mrOptions");
-		
+
 		AppService service = new AppServiceImpl();
-		
 
 		BirdInfo bInfo = new BirdInfo();
-		
+
 		bInfo.setName(englishName);
-		
+
 		bInfo.setPicUrl(picUrl);
 		bInfo.addLangName("mr", marathiName);
 		bInfo.addLangOptions("en", enOptions);
 		bInfo.addLangOptions("mr", mrOptions);
-		
-		
-		service.addBird(bInfo);
-		
-	
+
+		if (request.getParameter("id") != null
+				&& request.getParameter("id").startsWith("B")) {
+			bInfo.setId(request.getParameter("id"));
+			service.updateBirdInfo(bInfo);
+		} else {
+			service.addBird(bInfo);
+		}
+
 		session.setAttribute(Constants.REQUEST_TYPE, Constants.REGISTRATION);
 		session.setAttribute("CLIENT_IP", request.getRemoteAddr());
 		session.setAttribute("GUEST", guest);
-		
 
 		List<BirdInfo> birds = service.getAllBirds();
-		
+
 		model.addAttribute("birds", birds);
-		
-		ModelAndView modelAndView = new ModelAndView("birds",model);
+
+		ModelAndView modelAndView = new ModelAndView("birds", model);
 
 		return modelAndView;
 
 	}
-	
+
 }
