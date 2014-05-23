@@ -29,6 +29,27 @@ import com.threepillar.labs.socialauthsample.util.Constants;
 
 @Controller
 public class BirdController {
+	
+	
+	public static final String BIRD_START = "<b>";
+	public static final String BIRD_END = "</b>";
+	
+	public static final String ID_START = "<id>";
+	public static final String ID_END = "</id>";
+	
+	public static final String NAME_START = "<name>";
+	public static final String NAME_END = "</name>";
+	
+	public static final String URL_START = "<url>";
+	public static final String URL_END = "</url>";	
+	
+	public static final String ENGNAME_START = "<eName>";
+	public static final String ENGNAME_END = "</eName>";
+	
+	public static final String ALTERNATIVE_START = "<alt>";
+	public static final String ALTERNATIVE_END = "</alt>";
+	
+	
 
 	private final Logger logger = Logger.getLogger(BirdController.class
 			.getName());
@@ -96,11 +117,11 @@ public class BirdController {
 		for (Iterator iterator = birds.iterator(); iterator.hasNext();) {
 			BirdInfo birdInfo = (BirdInfo) iterator.next();
 
-			sb.append("<bird>");
+			sb.append(BIRD_START);
 
-			sb.append("<id>");
+			sb.append(ID_START);
 			sb.append(birdInfo.getId());
-			sb.append("</id>");
+			sb.append(ID_END);
 
 			String thisName = birdInfo.getNameForLang(langCode);
 
@@ -108,13 +129,13 @@ public class BirdController {
 				thisName = birdInfo.getName();
 			}
 
-			sb.append("<name>");
+			sb.append(NAME_START);
 			sb.append(thisName);
-			sb.append("</name>");
+			sb.append(NAME_END);
 
-			sb.append("<englishName>");
+			sb.append(ENGNAME_START);
 			sb.append(birdInfo.getName());
-			sb.append("</englishName>");
+			sb.append(ENGNAME_END);
 
 			String options = birdInfo.getOptionsForLang(langCode);
 
@@ -122,15 +143,15 @@ public class BirdController {
 				options = "NA1,NA2";
 			}
 
-			sb.append("<alternatives>");
+			sb.append(ALTERNATIVE_START);
 			sb.append(options);
-			sb.append("</alternatives>");
+			sb.append(ALTERNATIVE_END);
 
-			sb.append("<picUrl>");
+			sb.append(URL_START);
 			sb.append(birdInfo.getPicUrl());
-			sb.append("</picUrl>");
+			sb.append(URL_END);
 
-			sb.append("</bird>");
+			sb.append(BIRD_END);
 		}
 
 		sb.append("</birds>");
