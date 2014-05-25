@@ -49,6 +49,7 @@ public class BirdController {
 	public static final String ALTERNATIVE_START = "<alt>";
 	public static final String ALTERNATIVE_END = "</alt>";
 	
+	public static final String BASE_URL	 = "http://birdinfoquiz.appspot.com/images/";
 	
 
 	private final Logger logger = Logger.getLogger(BirdController.class
@@ -114,7 +115,9 @@ public class BirdController {
 
 		sb.append("<birds>");
 
-		for (Iterator iterator = birds.iterator(); iterator.hasNext();) {
+		String picUrl = null;
+		
+		for (Iterator<BirdInfo> iterator = birds.iterator(); iterator.hasNext();) {
 			BirdInfo birdInfo = (BirdInfo) iterator.next();
 
 			sb.append(BIRD_START);
@@ -139,16 +142,32 @@ public class BirdController {
 
 			String options = birdInfo.getOptionsForLang(langCode);
 
-			if (options == null) {
+			if ( options == null || options.length() < 4 ) {
 				options = "NA1,NA2";
 			}
+
 
 			sb.append(ALTERNATIVE_START);
 			sb.append(options);
 			sb.append(ALTERNATIVE_END);
 
+			
+			picUrl = birdInfo.getPicUrl();
+			
+			if ( picUrl == null ) {
+				picUrl = BASE_URL + "bird.jpg";
+			} else {
+				
+				// Prepend base url if we dont find http in the base url value.
+				
+				if ( picUrl.contains("http") == false ) {
+					picUrl = BASE_URL + picUrl;					
+				}
+				
+			}
+			
 			sb.append(URL_START);
-			sb.append(birdInfo.getPicUrl());
+			sb.append(picUrl);
 			sb.append(URL_END);
 
 			sb.append(BIRD_END);

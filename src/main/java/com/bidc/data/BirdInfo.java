@@ -134,9 +134,7 @@ public class BirdInfo extends AppEntity {
 	}
 	
 	public String getOptionsForLang(String code){
-		String options = "NA";
-		options = langOptions.get(code);
-		return options;
+		return  langOptions.get(code);
 	}
 		
 	public void addLangName(String key,String value){
