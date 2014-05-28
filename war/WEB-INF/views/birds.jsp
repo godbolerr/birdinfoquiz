@@ -195,12 +195,12 @@ h1,h2,h3,h4 {
 									<table border="1">
 										<tr>
 											<th>#</th>
-											<th>delete</th>
-											<th>Id</th>
-											<th>English Name</th>											
+											<th>X</th>
+											<th>Name</th>
+											<th>URL</th>
 											<th>Lang Options</th>
 											<th>Lang Names</th>	
-											<th>URL</th>
+											
 											
 									
 										</tr>
@@ -209,12 +209,12 @@ h1,h2,h3,h4 {
 											<c:set var="count" value="${count + 1}" scope="page" />
 											<tr>
 												<td><c:out value="${count}" /></td>
-												<td><a href="/xml/deleteBird/<c:out value="${bird.id}"/>">Delete</a></td>
-												<td><a href="/viewUpdate.do?bid=<c:out value="${bird.id}" />"><c:out value="${bird.id}" /></a></td>
-												<td><c:out value="${bird.name}" /></td>
+												<td><a href="/xml/deleteBird/<c:out value="${bird.id}"/>">X</a></td>
+												<td><a href="/viewUpdate.do?bid=<c:out value="${bird.id}" />"><c:out value="${bird.name}" /></a></td>
+												<td><img src="<c:out value="${bird.picUrl}" />"></td>
 												<td><c:out value="${bird.langOptions}" /></td>
 												<td><c:out value="${bird.langNames}" /></td>
-												<td><c:out value="${bird.picUrl}" /></td>
+												
 												
 												
 											</tr>

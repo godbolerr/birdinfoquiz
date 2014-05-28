@@ -38,6 +38,8 @@ import com.bidc.service.BIDCException;
  */
 public class AppServiceImpl implements AppService {
 	
+	public static final String BASE_URL	 = "http://birdinfoquiz.appspot.com/images/";
+	
 	private final Logger logger = Logger.getLogger(AppServiceImpl.class
 			.getName());
 
@@ -88,7 +90,38 @@ public class AppServiceImpl implements AppService {
 	 */
 	@Override
 	public List<BirdInfo> getAllBirds() {
-		return dao.getAll(BirdInfo.class);
+		
+		
+		List<BirdInfo>  birds = dao.getAll(BirdInfo.class);
+		
+		
+		for (Iterator iterator = birds.iterator(); iterator.hasNext();) {
+			BirdInfo birdInfo = (BirdInfo) iterator.next();
+			
+			String picUrl = birdInfo.getPicUrl();
+			
+			if ( picUrl == null ) {
+				picUrl = BASE_URL + "bird.jpg";
+			} else {
+				
+				// Prepend base url if we dont find http in the base url value.
+				
+				
+				if ( picUrl.contains("http") == false ) {
+					picUrl = BASE_URL + picUrl;					
+				}
+				
+			}
+	
+			birdInfo.setPicUrl(picUrl);
+				
+		}
+		
+
+		
+		return birds;
+		
+		
 	}
 
 	/* (non-Javadoc)

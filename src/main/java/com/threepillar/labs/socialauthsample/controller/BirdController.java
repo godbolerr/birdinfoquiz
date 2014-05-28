@@ -84,7 +84,11 @@ public class BirdController {
 		session.setAttribute("GUEST", guest);
 
 		AppService service = new AppServiceImpl();
+		
 		List<BirdInfo> birds = service.getAllBirds();
+		
+		
+		
 
 		model.addAttribute("birds", birds);
 
